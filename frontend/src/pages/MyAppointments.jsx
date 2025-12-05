@@ -46,7 +46,7 @@ const MyAppointments = () => {
                 getUserAppointments()
             } else {
                 toast.error(data.message)
-            }
+            }   
 
         } catch (error) {
             console.log(error)
