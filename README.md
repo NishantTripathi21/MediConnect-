@@ -137,21 +137,6 @@ npm run dev
     └── src/context  # Admin State Management
 ```
 
----
-
-## 📸 Screenshots
-
-### 🏠 Home Page
-*(Add your screenshot path here, e.g., `![Home](screenshots/home.png)`)*
-
-### 📅 Doctor Booking Flow
-*(Add your screenshot path here)*
-
-### 🛠️ Admin Dashboard
-*(Add your screenshot path here)*
-
----
-
 ## 🤝 Contribution
 Contributions are welcome!
 1. Fork the repo.
@@ -162,5 +147,5 @@ Contributions are welcome!
 ---
 
 ## 👨‍💻 Author
-**Your Name**
-* [GitHub Profile](https://github.com/your-username)
+**NISHANT TRIPATHI**
+* [GitHub Profile](https://github.com/NishantTripathi21)
