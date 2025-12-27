@@ -21,13 +21,14 @@ const App = () => {
   const { aToken } = useContext(AdminContext)
 
   return dToken || aToken ? (
-    <div className='bg-[#F8F9FD]'>
+    <div className='bg-black min-h-screen'>
       <ToastContainer />
       <Navbar />
       <div className='flex items-start'>
         <Sidebar />
         <Routes>
-          <Route path='/' element={<></>} />
+          {dToken && <Route path='/' element={<DoctorDashboard/>} />}
+          {aToken && <Route path='/' element={<Dashboard/>} />}
           <Route path='/admin-dashboard' element={<Dashboard />} />
           <Route path='/all-appointments' element={<AllAppointments />} />
           <Route path='/add-doctor' element={<AddDoctor />} />

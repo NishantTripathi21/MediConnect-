@@ -15,46 +15,70 @@ const Dashboard = () => {
   }, [aToken])
 
   return dashData && (
-    <div className='m-5'>
+    <div className='m-5 text-white'>
+      
+      <div className='flex flex-wrap gap-5'>
+        <div className='flex items-center gap-6 bg-transparent p-6 min-w-72 rounded-3xl border border-white/10 shadow-lg hover:border-white/20 transition-all'>
+          <img className='w-14 bg-white/5 p-3 rounded-2xl' src={assets.doctor_icon} alt="" />
+          <div>
+            <p className='text-3xl font-bold'>{dashData.doctors}</p>
+            <p className='text-gray-400 font-medium tracking-wide'>Doctors</p>
+          </div>
+        </div>
+        
+        <div className='flex items-center gap-6 bg-transparent p-6 min-w-72 rounded-3xl border border-white/10 shadow-lg hover:border-white/20 transition-all'>
+          <img className='w-14 bg-white/5 p-3 rounded-2xl' src={assets.appointments_icon} alt="" />
+          <div>
+            <p className='text-3xl font-bold'>{dashData.appointments}</p>
+            <p className='text-gray-400 font-medium tracking-wide'>Appointments</p>
+          </div>
+        </div>
 
-      <div className='flex flex-wrap gap-3'>
-        <div className='flex items-center gap-2 bg-white p-4 min-w-52 rounded border-2 border-gray-100 cursor-pointer hover:scale-105 transition-all'>
-          <img className='w-14' src={assets.doctor_icon} alt="" />
+        <div className='flex items-center gap-6 bg-transparent p-6 min-w-72 rounded-3xl border border-white/10 shadow-lg hover:border-white/20 transition-all'>
+          <img className='w-14 bg-white/5 p-3 rounded-2xl' src={assets.patients_icon} alt="" />
           <div>
-            <p className='text-xl font-semibold text-gray-600'>{dashData.doctors}</p>
-            <p className='text-gray-400'>Doctors</p>
+            <p className='text-3xl font-bold'>{dashData.patients}</p>
+            <p className='text-gray-400 font-medium tracking-wide'>Patients</p>
           </div>
-        </div>
-        <div className='flex items-center gap-2 bg-white p-4 min-w-52 rounded border-2 border-gray-100 cursor-pointer hover:scale-105 transition-all'>
-          <img className='w-14' src={assets.appointments_icon} alt="" />
-          <div>
-            <p className='text-xl font-semibold text-gray-600'>{dashData.appointments}</p>
-            <p className='text-gray-400'>Appointments</p>
-          </div>
-        </div>
-        <div className='flex items-center gap-2 bg-white p-4 min-w-52 rounded border-2 border-gray-100 cursor-pointer hover:scale-105 transition-all'>
-          <img className='w-14' src={assets.patients_icon} alt="" />
-          <div>
-            <p className='text-xl font-semibold text-gray-600'>{dashData.patients}</p>
-            <p className='text-gray-400'>Patients</p></div>
         </div>
       </div>
 
-      <div className='bg-white'>
-        <div className='flex items-center gap-2.5 px-4 py-4 mt-10 rounded-t border'>
-          <img src={assets.list_icon} alt="" />
-          <p className='font-semibold'>Latest Bookings</p>
+      <div className='bg-transparent mt-10 rounded-3xl border border-white/10 overflow-hidden'>
+        <div className='flex items-center gap-3 px-8 py-6 border-b border-white/10 bg-white/5'>
+          <img className='w-6 brightness-200' src={assets.list_icon} alt="" />
+          <p className='font-bold text-xl tracking-tight'>Latest Bookings</p>
         </div>
 
-        <div className='pt-4 border border-t-0'>
+        <div className='pt-2 pb-2'>
           {dashData.latestAppointments.slice(0, 5).map((item, index) => (
-            <div className='flex items-center px-6 py-3 gap-3 hover:bg-gray-100' key={index}>
-              <img className='rounded-full w-10' src={item.docData.image} alt="" />
-              <div className='flex-1 text-sm'>
-                <p className='text-gray-800 font-medium'>{item.docData.name}</p>
-                <p className='text-gray-600 '>Booking on {slotDateFormat(item.slotDate)}</p>
+            <div className='flex items-center px-8 py-5 gap-4 hover:bg-white/5 transition-all border-b border-white/5 last:border-none' key={index}>
+              <img className='rounded-full w-12 h-12 object-cover border border-white/10' src={item.docData.image} alt="" />
+              <div className='flex-1'>
+                <p className='text-white font-bold text-lg'>{item.docData.name}</p>
+                <p className='text-gray-400 text-sm'>Booking on <span className='text-gray-300'>{slotDateFormat(item.slotDate)}</span></p>
               </div>
-              {item.cancelled ? <p className='text-red-400 text-xs font-medium'>Cancelled</p> : item.isCompleted ? <p className='text-green-500 text-xs font-medium'>Completed</p> : <img onClick={() => cancelAppointment(item._id)} className='w-10 cursor-pointer' src={assets.cancel_icon} alt="" />}
+              
+              <div className='flex items-center justify-end min-w-32'>
+                {item.cancelled ? (
+                  <p className='text-orange-400 text-[10px] font-bold uppercase tracking-widest border border-orange-500/20 bg-orange-500/5 px-3 py-1 rounded'>
+                    Cancelled
+                  </p>
+                ) : item.isCompleted ? (
+                  <p className='text-green-500 text-[10px] font-bold uppercase tracking-widest border border-green-500/20 bg-green-500/5 px-3 py-1 rounded'>
+                    Completed
+                  </p>
+                ) : (
+                  <button
+                    onClick={async () => {
+                      await cancelAppointment(item._id)
+                      getDashData()
+                    }}
+                    className='text-red-400 text-xs font-semibold uppercase tracking-wider border border-red-500/20 bg-red-500/5 px-4 py-2 rounded-lg hover:bg-red-500/10 hover:text-red-300 transition-all'
+                  >
+                    Cancel
+                  </button>
+                )}
+              </div>
             </div>
           ))}
         </div>

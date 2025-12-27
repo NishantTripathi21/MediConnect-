@@ -3,10 +3,31 @@
 @tailwind components;
 @tailwind utilities;
 
-*{
-    font-family: Outfit;
+@layer base {
+  body {
+    background-color: #0a0d14; /* Using hex directly for the first load */
+    color: #f8fafc;
+    font-family: 'Outfit', sans-serif;
+  }
+
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #0a0d14;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.08);
+    border-radius: 10px;
+  }
 }
 
-::-webkit-scrollbar{
-    display: none;
+@layer components {
+  .admin-card {
+    @apply bg-bg-surface border border-border-soft rounded-2xl p-6 shadow-xl;
+  }
+  
+  .input-field {
+    @apply bg-bg-muted border border-border-soft rounded-lg px-4 py-2.5 outline-none focus:border-primary transition-all text-text-main;
+  }
 }

@@ -37,7 +37,7 @@ const registerUser = async (req, res) => {
         }
 
         // hashing user password
-        const salt = await bcrypt.genSalt(10); // the more no. round the more time it will take
+        const salt = await bcrypt.genSalt(10);// the more no. round the more time it will take
         const hashedPassword = await bcrypt.hash(password, salt)
 
         const userData = {
@@ -96,7 +96,7 @@ const getProfile = async (req, res) => {
     } catch (error) {
         console.log(error)
         res.json({ success: false, message: error.message })
-    }
+    } 
 }
 
 // API to update user profile
@@ -137,7 +137,7 @@ const bookAppointment = async (req, res) => {
 
         const { userId, docId, slotDate, slotTime } = req.body
         const docData = await doctorModel.findById(docId).select("-password")
-
+        
         if (!docData.available) {
             return res.json({ success: false, message: 'Doctor Not Available' })
         }
@@ -190,7 +190,6 @@ const bookAppointment = async (req, res) => {
 // API to cancel appointment
 const cancelAppointment = async (req, res) => {
     try {
-
         const { userId, appointmentId } = req.body
         const appointmentData = await appointmentModel.findById(appointmentId)
 
@@ -222,16 +221,15 @@ const cancelAppointment = async (req, res) => {
 
 // API to get user appointments for frontend my-appointments page
 const listAppointment = async (req, res) => {
-    try {
+    try{
+        const {userId} = req.body
+        const appointments = await appointmentModel.find({userId})
 
-        const { userId } = req.body
-        const appointments = await appointmentModel.find({ userId })
-
-        res.json({ success: true, appointments })
-
-    } catch (error) {
+        res.json({success:true, appointments})
+    }
+    catch(error) {
         console.log(error)
-        res.json({ success: false, message: error.message })
+        res.json({success:false, message: error.message})
     }
 }
 

@@ -11,9 +11,7 @@ const DoctorProfile = () => {
     const [isEdit, setIsEdit] = useState(false)
 
     const updateProfile = async () => {
-
         try {
-
             const updateData = {
                 address: profileData.address,
                 fees: profileData.fees,
@@ -30,14 +28,10 @@ const DoctorProfile = () => {
             } else {
                 toast.error(data.message)
             }
-
-            setIsEdit(false)
-
         } catch (error) {
             toast.error(error.message)
             console.log(error)
         }
-
     }
 
     useEffect(() => {
@@ -47,57 +41,104 @@ const DoctorProfile = () => {
     }, [dToken])
 
     return profileData && (
-        <div>
-            <div className='flex flex-col gap-4 m-5'>
-                <div>
-                    <img className='bg-primary/80 w-full sm:max-w-64 rounded-lg' src={profileData.image} alt="" />
+        <div className='min-h-[80vh] flex items-center justify-center p-5'>
+            <div className='w-full max-w-5xl flex flex-col md:flex-row gap-8 text-white'>
+                
+                <div className='flex justify-center'>
+                    <img 
+                        className='bg-white/5 w-full sm:max-w-72 md:max-w-80 rounded-3xl border border-white/10 shadow-2xl object-cover h-fit' 
+                        src={profileData.image} 
+                        alt={profileData.name} 
+                    />
                 </div>
 
-                <div className='flex-1 border border-stone-100 rounded-lg p-8 py-7 bg-white'>
+                <div className='flex-1 border border-white/10 rounded-[2.5rem] p-10 bg-white/5 backdrop-blur-sm shadow-2xl'>
 
-                    {/* ----- Doc Info : name, degree, experience ----- */}
-
-                    <p className='flex items-center gap-2 text-3xl font-medium text-gray-700'>{profileData.name}</p>
-                    <div className='flex items-center gap-2 mt-1 text-gray-600'>
-                        <p>{profileData.degree} - {profileData.speciality}</p>
-                        <button className='py-0.5 px-2 border text-xs rounded-full'>{profileData.experience}</button>
+                    <div className='flex flex-col sm:flex-row sm:items-center justify-between gap-4'>
+                        <div>
+                            <p className='text-4xl font-bold tracking-tight'>{profileData.name}</p>
+                            <div className='flex items-center gap-3 mt-2'>
+                                <p className='text-gray-400 text-lg font-medium'>{profileData.degree} - {profileData.speciality}</p>
+                                <span className='py-1 px-4 border border-white/10 text-[10px] font-bold uppercase rounded-full bg-white/5 tracking-widest text-primary'>
+                                    {profileData.experience} EXP
+                                </span>
+                            </div>
+                        </div>
                     </div>
 
-                    {/* ----- Doc About ----- */}
-                    <div>
-                        <p className='flex items-center gap-1 text-sm font-medium text-[#262626] mt-3'>About :</p>
-                        <p className='text-sm text-gray-600 max-w-[700px] mt-1'>
+                    <div className='mt-10'>
+                        <p className='text-xs font-bold text-gray-500 uppercase tracking-[0.2em] mb-3'>Professional Summary</p>
+                        <div className='text-base text-gray-300 leading-relaxed'>
                             {
                                 isEdit
-                                    ? <textarea onChange={(e) => setProfileData(prev => ({ ...prev, about: e.target.value }))} type='text' className='w-full outline-primary p-2' rows={8} value={profileData.about} />
-                                    : profileData.about
+                                    ? <textarea 
+                                        onChange={(e) => setProfileData(prev => ({ ...prev, about: e.target.value }))} 
+                                        className='w-full bg-white/5 border border-white/10 rounded-2xl outline-none p-5 focus:border-primary transition-all resize-none' 
+                                        rows={5} 
+                                        value={profileData.about} 
+                                      />
+                                    : <p className='bg-white/[0.02] p-6 rounded-2xl border border-white/5'>{profileData.about}</p>
                             }
-                        </p>
+                        </div>
                     </div>
 
-                    <p className='text-gray-600 font-medium mt-4'>
-                        Appointment fee: <span className='text-gray-800'>{currency} {isEdit ? <input type='number' onChange={(e) => setProfileData(prev => ({ ...prev, fees: e.target.value }))} value={profileData.fees} /> : profileData.fees}</span>
-                    </p>
+                    <div className='mt-10 grid grid-cols-1 md:grid-cols-2 gap-10'>
+                        <div className='bg-white/[0.02] p-6 rounded-2xl border border-white/5'>
+                            <p className='text-xs font-bold text-gray-500 uppercase tracking-[0.2em] mb-3'>Consultation Fee</p>
+                            <p className='text-2xl font-black text-white'>
+                                {currency} {
+                                    isEdit 
+                                    ? <input 
+                                        type='number' 
+                                        className='bg-white/5 border border-white/10 rounded-xl px-4 py-1 outline-none focus:border-primary w-28 text-xl font-bold' 
+                                        onChange={(e) => setProfileData(prev => ({ ...prev, fees: e.target.value }))} 
+                                        value={profileData.fees} 
+                                      /> 
+                                    : <span>{profileData.fees}</span>
+                                }
+                            </p>
+                        </div>
 
-                    <div className='flex gap-2 py-2'>
-                        <p>Address:</p>
-                        <p className='text-sm'>
-                            {isEdit ? <input type='text' onChange={(e) => setProfileData(prev => ({ ...prev, address: { ...prev.address, line1: e.target.value } }))} value={profileData.address.line1} /> : profileData.address.line1}
-                            <br />
-                            {isEdit ? <input type='text' onChange={(e) => setProfileData(prev => ({ ...prev, address: { ...prev.address, line2: e.target.value } }))} value={profileData.address.line2} /> : profileData.address.line2}
-                        </p>
+                        <div className='bg-white/[0.02] p-6 rounded-2xl border border-white/5'>
+                            <p className='text-xs font-bold text-gray-500 uppercase tracking-[0.2em] mb-3'>Clinic Location</p>
+                            <div className='text-sm text-gray-300 font-medium'>
+                                {isEdit ? (
+                                    <div className='flex flex-col gap-3'>
+                                        <input className='bg-white/5 border border-white/10 rounded-xl px-4 py-2 outline-none focus:border-primary w-full' type='text' onChange={(e) => setProfileData(prev => ({ ...prev, address: { ...prev.address, line1: e.target.value } }))} value={profileData.address.line1} />
+                                        <input className='bg-white/5 border border-white/10 rounded-xl px-4 py-2 outline-none focus:border-primary w-full' type='text' onChange={(e) => setProfileData(prev => ({ ...prev, address: { ...prev.address, line2: e.target.value } }))} value={profileData.address.line2} />
+                                    </div>
+                                ) : (
+                                    <p className='leading-relaxed'>
+                                        {profileData.address.line1} <br />
+                                        {profileData.address.line2}
+                                    </p>
+                                )}
+                            </div>
+                        </div>
                     </div>
 
-                    <div className='flex gap-1 pt-2'>
-                        <input type="checkbox" onChange={() => isEdit && setProfileData(prev => ({ ...prev, available: !prev.available }))} checked={profileData.available} />
-                        <label htmlFor="">Available</label>
-                    </div>
+                    <div className='flex items-center justify-between pt-8 mt-10 border-t border-white/10'>
+                        <div className='flex items-center gap-3'>
+                            <input 
+                                className='w-5 h-5 accent-primary cursor-pointer' 
+                                type="checkbox" 
+                                onChange={() => isEdit && setProfileData(prev => ({ ...prev, available: !prev.available }))} 
+                                checked={profileData.available} 
+                                id="availability"
+                            />
+                            <label className={`text-sm font-black uppercase tracking-widest cursor-pointer ${profileData.available ? 'text-green-500' : 'text-orange-400'}`} htmlFor="availability">
+                                {profileData.available ? 'Instant Booking Active' : 'Currently Offline'}
+                            </label>
+                        </div>
 
-                    {
-                        isEdit
-                            ? <button onClick={updateProfile} className='px-4 py-1 border border-primary text-sm rounded-full mt-5 hover:bg-primary hover:text-white transition-all'>Save</button>
-                            : <button onClick={() => setIsEdit(prev => !prev)} className='px-4 py-1 border border-primary text-sm rounded-full mt-5 hover:bg-primary hover:text-white transition-all'>Edit</button>
-                    }
+                        <div>
+                            {
+                                isEdit
+                                    ? <button onClick={updateProfile} className='px-12 py-3.5 bg-primary text-white font-bold rounded-2xl shadow-xl shadow-primary/20 hover:brightness-110 active:scale-95 transition-all'>Update Details</button>
+                                    : <button onClick={() => setIsEdit(true)} className='px-12 py-3.5 border border-white/20 text-white font-bold rounded-2xl hover:bg-white/5 transition-all backdrop-blur-md'>Edit Profile</button>
+                            }
+                        </div>
+                    </div>
 
                 </div>
             </div>

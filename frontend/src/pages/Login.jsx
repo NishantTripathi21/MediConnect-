@@ -15,33 +15,37 @@ const Login = () => {
   const navigate = useNavigate()
   const { backendUrl, token, setToken } = useContext(AppContext)
 
+  const handleDemoLogin = () => {
+    setState('Login')
+    setEmail('Demo@mediconnect.com')
+    setPassword('Demo@123')
+    toast.info('User demo credentials filled!')
+  }
+
   const onSubmitHandler = async (event) => {
     event.preventDefault();
 
-    if (state === 'Sign Up') {
-
-      const { data } = await axios.post(backendUrl + '/api/user/register', { name, email, password })
-
-      if (data.success) {
-        localStorage.setItem('token', data.token)
-        setToken(data.token)
+    try {
+      if (state === 'Sign Up') {
+        const { data } = await axios.post(backendUrl + '/api/user/register', { name, email, password })
+        if (data.success) {
+          localStorage.setItem('token', data.token)
+          setToken(data.token)
+        } else {
+          toast.error(data.message)
+        }
       } else {
-        toast.error(data.message)
+        const { data } = await axios.post(backendUrl + '/api/user/login', { email, password })
+        if (data.success) {
+          localStorage.setItem('token', data.token)
+          setToken(data.token)
+        } else {
+          toast.error(data.message)
+        }
       }
-
-    } else {
-
-      const { data } = await axios.post(backendUrl + '/api/user/login', { email, password })
-
-      if (data.success) {
-        localStorage.setItem('token', data.token)
-        setToken(data.token)
-      } else {
-        toast.error(data.message)
-      }
-
+    } catch (error) {
+      toast.error(error.message)
     }
-
   }
 
   useEffect(() => {
@@ -51,30 +55,67 @@ const Login = () => {
   }, [token])
 
   return (
-    <form onSubmit={onSubmitHandler} className='min-h-[80vh] flex items-center'>
-      <div className='flex flex-col gap-3 m-auto items-start p-8 min-w-[340px] sm:min-w-96 border rounded-xl text-[#5E5E5E] text-sm shadow-lg'>
-        <p className='text-2xl font-semibold'>{state === 'Sign Up' ? 'Create Account' : 'Login'}</p>
-        <p>Please {state === 'Sign Up' ? 'sign up' : 'log in'} to book appointment</p>
-        {state === 'Sign Up'
-          ? <div className='w-full '>
-            <p>Full Name</p>
-            <input onChange={(e) => setName(e.target.value)} value={name} className='border border-[#DADADA] rounded w-full p-2 mt-1' type="text" required />
+    <form onSubmit={onSubmitHandler} className='min-h-[80vh] flex items-center text-text-main'>
+      <div className='flex flex-col gap-3 m-auto items-start p-8 min-w-[340px] sm:min-w-96 bg-bg-surface border border-border-soft rounded-2xl text-sm shadow-2xl'>
+        <p className='text-2xl font-bold text-text-main'>{state === 'Sign Up' ? 'Create Account' : 'Login'}</p>
+        <p className='text-text-dim'>Please {state === 'Sign Up' ? 'sign up' : 'log in'} to book appointment</p>
+        
+        {state === 'Sign Up' && (
+          <div className='w-full '>
+            <p className='font-medium mb-1'>Full Name</p>
+            <input 
+              onChange={(e) => setName(e.target.value)} 
+              value={name} 
+              className='bg-bg-muted border border-border-soft rounded-lg w-full p-2.5 outline-none focus:border-primary transition-all text-text-main' 
+              type="text" 
+              required 
+            />
           </div>
-          : null
-        }
+        )}
+
         <div className='w-full '>
-          <p>Email</p>
-          <input onChange={(e) => setEmail(e.target.value)} value={email} className='border border-[#DADADA] rounded w-full p-2 mt-1' type="email" required />
+          <p className='font-medium mb-1'>Email</p>
+          <input 
+            onChange={(e) => setEmail(e.target.value)} 
+            value={email} 
+            className='bg-bg-muted border border-border-soft rounded-lg w-full p-2.5 outline-none focus:border-primary transition-all text-text-main' 
+            type="email" 
+            required 
+          />
         </div>
+
         <div className='w-full '>
-          <p>Password</p>
-          <input onChange={(e) => setPassword(e.target.value)} value={password} className='border border-[#DADADA] rounded w-full p-2 mt-1' type="password" required />
+          <p className='font-medium mb-1'>Password</p>
+          <input 
+            onChange={(e) => setPassword(e.target.value)} 
+            value={password} 
+            className='bg-white/5 border border-border-soft rounded-lg w-full p-2.5 outline-none focus:border-primary transition-all text-text-main' 
+            type="password" 
+            required 
+          />
         </div>
-        <button className='bg-primary text-white w-full py-2 my-2 rounded-md text-base'>{state === 'Sign Up' ? 'Create account' : 'Login'}</button>
+
+        <button className='bg-primary text-bg-main w-full py-3 mt-4 rounded-lg text-base font-bold hover:bg-primary-muted transition-all active:scale-95 shadow-lg shadow-primary/10'>
+          {state === 'Sign Up' ? 'Create account' : 'Login'}
+        </button>
+
         {state === 'Sign Up'
-          ? <p>Already have an account? <span onClick={() => setState('Login')} className='text-primary underline cursor-pointer'>Login here</span></p>
-          : <p>Create an new account? <span onClick={() => setState('Sign Up')} className='text-primary underline cursor-pointer'>Click here</span></p>
+          ? <p className='text-text-dim mt-2'>Already have an account? <span onClick={() => setState('Login')} className='text-primary font-semibold underline cursor-pointer'>Login here</span></p>
+          : <p className='text-text-dim mt-2'>Create a new account? <span onClick={() => setState('Sign Up')} className='text-primary font-semibold underline cursor-pointer'>Click here</span></p>
         }
+
+        {/* --- HR / Interviewer Quick Access --- */}
+        <div className='w-full mt-6 pt-6 border-t border-border-soft'>
+          <p className='text-[10px] font-black uppercase tracking-[0.2em] text-text-dim text-center mb-4'>Quick Access</p>
+          <div 
+            onClick={handleDemoLogin}
+            className='flex justify-between items-center bg-bg-muted border border-border-soft p-3 rounded-xl cursor-pointer hover:bg-bg-surface hover:border-primary/50 transition-all group'
+          >
+            <span className='text-xs font-bold text-text-dim group-hover:text-text-main'>User Demo Account</span>
+            <span className='text-[10px] bg-primary/10 text-primary px-2 py-1 rounded font-black uppercase'>Auto Fill</span>
+          </div>
+        </div>
+
       </div>
     </form>
   )

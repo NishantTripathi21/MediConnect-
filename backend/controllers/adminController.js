@@ -85,10 +85,14 @@ const addDoctor = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, salt)
 
         // upload image to cloudinary
-        const imageUpload = await cloudinary.uploader.upload(imageFile.path, { resource_type: "image" })
-        const imageUrl = imageUpload.secure_url
-
-        const doctorData = {
+    //let imageUrl; // declare in outer scope
+    
+        const imageUpload = await cloudinary.uploader.upload(
+            imageFile.path,
+            { resource_type: "image" }
+        );
+        const imageUrl = imageUpload.secure_url;
+    const doctorData = {
             name,
             email,
             image: imageUrl,
@@ -100,7 +104,8 @@ const addDoctor = async (req, res) => {
             fees,
             address: JSON.parse(address),
             date: Date.now()
-        }
+        };
+        console.log(doctorData)
 
         const newDoctor = new doctorModel(doctorData)
         await newDoctor.save()
