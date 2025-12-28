@@ -11,6 +11,19 @@ This project uses a scalable **MERN-style architecture** with three distinct com
 3.  **Backend:** A unified API server handling logic, database, and security.
 
 ---
+## 🌐 Live Show
+Experience the platform live! You can access the different panels using the links below:
+
+| Component | Live Link |
+| :--- | :--- | 
+| **Patient Interface** | [Live Demo](https://medi-connect-alpha-liard.vercel.app/) | 
+| **Admin Panel** | [Live Demo](https://medi-connect-admin-pi.vercel.app/) |
+| **Doctor Panel** | [Live Demo](https://medi-connect-admin-pi.vercel.app/) |
+| **Backend** | [Ensure it is awake](https://mediconnect-czy7.onrender.com) |
+
+> **Note:** The backend might take a few seconds to "wake up" on initial load.
+
+---
 
 ## ✨ Key Features
 
