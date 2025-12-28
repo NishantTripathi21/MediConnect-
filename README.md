@@ -93,6 +93,8 @@ CLOUDINARY_API_SECRET = "your_api_secret"
 # Payments
 STRIPE_SECRET_KEY=your_stripe_secret_key
 RAZORPAY_KEY_ID=your_razorpay_key_id
+RAZORPAY_KEY_SECRET="you_razorpay_secret_key"
+
 ```
 
 **Run Server:**
@@ -105,6 +107,16 @@ Open a new terminal:
 ```bash
 cd frontend
 npm install
+```
+**Configure Environment Variables:**
+Create a `.env` file in the `frontend` folder:
+```env
+VITE_BACKEND_URL ='http://localhost:4000'
+VITE_RAZORPAY_KEY_ID ='rzp_test_RwNLqiRckam8eo'
+
+```
+**Run Frontend:**
+```bash
 npm run dev
 ```
 
@@ -113,6 +125,15 @@ Open a third terminal:
 ```bash
 cd admin
 npm install
+```
+**Configure Environment Variables:**
+Create a `.env` file in the `admin` folder:
+```env
+VITE_BACKEND_URL ='http://localhost:4000'
+VITE_CURRENCY = '₹'
+```
+**Run admin:**
+```bash
 npm run dev
 ```
 
@@ -134,7 +155,7 @@ npm run dev
 │
 └── /admin           # Admin React Application
     ├── src/pages    # Dashboard, AddDoctor, AllAppointments
-    └── src/context  # Admin State Management
+    └── src/components 
 ```
 
 ## 🤝 Contribution
