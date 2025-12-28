@@ -18,7 +18,7 @@ app.use(express.json())
 app.use(cors({
   origin: [
     "http://localhost:5173",
-    "https://medi-connect-alpha-liard.vercel.app/",
+    "https://medi-connect-alpha-liard.vercel.app",
     "https://medi-connect-admin-seven.vercel.app"
   ],
   credentials: true
